@@ -23,9 +23,7 @@ const ListTask = () => {
             if (res.data.nextPage ==null) {
                 setPage(0);
             }
-            if (page==0){
-
-            }else if (page === 1) {
+            if (page === 1) {
                 setTasks(res.data.tasks);
             } else {
                 setTasks(current => [...current, ...res.data.tasks]);
@@ -60,15 +58,15 @@ const ListTask = () => {
 
     useEffect(() => {
         loadTasks();
-    }, [page]);
+    }, [loadTasks,page]);
 
     const loadMore = () => {
         if (!loading && page > 0 && scrollContainerRef.current) {
             if (isCloseToBottom(scrollContainerRef.current)) {
-                setLoading(true); // Hiển thị spinner trước khi load
+                setLoading(true);
                 setTimeout(() => {
                     setPage(page +1);
-                }, 500); // Thêm delay nhỏ để hiển thị loading trước
+                }, 500);
             }
         }
     };
@@ -85,14 +83,25 @@ const ListTask = () => {
     const handleInsertSampleData = async () => {
         setShowModal(false);
         const sampleTasks = [
-            { title: "Learn Go", description: "Study Golang basics" },
-            { title: "Learn React", description: "Practice React hooks" },
-            { title: "Build API", description: "Create REST API with Node.js" }
+            { "title": "Learn Go", "description": "Study Golang basics" },
+            { "title": "Learn React", "description": "Practice React hooks" },
+            { "title": "Build API", "description": "Create REST API with Node.js" },
+            { "title": "Master TypeScript", "description": "Understand TypeScript and its benefits" },
+            { "title": "Explore Next.js", "description": "Learn about server-side rendering with Next.js" },
+            { "title": "Database Optimization", "description": "Improve SQL queries and database indexing" },
+            { "title": "Build a Chat App", "description": "Develop a real-time chat application using WebSockets" },
+            { "title": "Deploy with Docker", "description": "Containerize applications with Docker" },
+            { "title": "GraphQL API", "description": "Create a GraphQL API with Apollo Server" },
+            { "title": "Authentication System", "description": "Implement JWT-based authentication in a web app" },
+            { "title": "CI/CD Pipeline", "description": "Automate deployments with GitHub Actions" },
+            { "title": "Microservices Architecture", "description": "Design scalable microservices with Kubernetes" },
+            { "title": "AI Chatbot", "description": "Build an AI-powered chatbot using Python and NLP" }
         ];
 
         try {
             const promises = sampleTasks.map(task => APIs.post(`tasks`, task));
             await Promise.all(promises);
+            setPage(1);
             loadTasks();
         } catch (error) {
             console.error("Lỗi khi thêm dữ liệu mẫu:", error);
@@ -103,29 +112,33 @@ const ListTask = () => {
         <div className="app-container">
             <div className="background-image">
                 <div className="background-overlay"></div>
+                <header
+                    className="menu d-flex justify-content-between align-items-center p-3 shadow-sm bg-white rounded">
+                    <h4 className="mb-0 text-primary">Quản lý Công việc</h4>
+                    <Form className="search-form d-flex gap-2">
+                        <Form.Control
+                            type="text"
+                            placeholder="Nhập từ khóa..."
+                            onChange={handleTextChange}
+                            value={q}
+                            className="search-input form-control w-100"
+                        />
+                        <Button onClick={() => handleSearch(q)} className="search-button btn btn-primary">
+                            <i className="bi bi-search"></i> Tìm kiếm
+                        </Button>
+                        <Button onClick={handleInsertSampleData} className="btn btn-success">
+                            <i className="bi bi-plus-circle"></i> Thêm dữ liệu
+                        </Button>
+                    </Form>
+                </header>
                 <Container
                     onScroll={loadMore}
                     ref={scrollContainerRef}
                     className="content-container"
-                    style={{height: "80vh", overflowY: "auto"}} // Thêm thanh cuộn
+                    style={{height: "80vh", overflowY: "auto"}}
                 >
-                    <header className="menu d-flex align-items-center ">
-                        <Form className="search-form d-flex">
-                            <Form.Control
-                                type="text"
-                                placeholder="Nhập từ khóa..."
-                                onChange={handleTextChange}
-                                value={q}
-                                className="search-input me-2"
-                            />
-                            <Button onClick={() => handleSearch(q)} className="search-button">
-                                Tìm kiếm
-                            </Button>
-                            <button className="btn-primary" onClick={handleInsertSampleData}>Thêm dữ liệu</button>
 
-                        </Form>
-                    </header>
-                    <Table bordered hover responsive className="table-striped table-sm shadow-sm rounded mt-2">
+                    <Table bordered hover responsive className="table-striped table-sm shadow-sm rounded mt-4">
                         <thead className="thead-light">
                         <tr>
                             {tasks.length > 0 &&
@@ -162,7 +175,7 @@ const ListTask = () => {
                         Hệ thống không tìm thấy dữ liệu. Bạn có muốn nhập dữ liệu mẫu không?
                     </Modal.Body>
                     <Modal.Footer>
-                    <Button variant="secondary" onClick={() => setShowModal(false)}>Hủy</Button>
+                        <Button variant="secondary" onClick={() => setShowModal(false)}>Hủy</Button>
                         <Button variant="primary" onClick={handleInsertSampleData}>Thêm dữ liệu mẫu</Button>
                     </Modal.Footer>
                 </Modal>

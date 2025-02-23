@@ -4,21 +4,39 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7dca5d14-ab36-4f68-8746-7045ef4f0a6c" name="Changes" comment="create app" />
+    <list default="true" id="7dca5d14-ab36-4f68-8746-7045ef4f0a6c" name="Changes" comment="update api">
+      <change afterPath="$PROJECT_DIR$/src/Styles/ListTask.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Task/ListTask.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Task/ListTask.js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="CSS File" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/sonpnts/todo-frontend.git",
-    "accountId": "d758bb19-b5ef-4700-9076-1d780064c50a"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;sonpnts&quot;
   }
-}]]></component>
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/sonpnts/todo-frontend.git&quot;,
+    &quot;accountId&quot;: &quot;d758bb19-b5ef-4700-9076-1d780064c50a&quot;
+  }
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 5
 }</component>
@@ -38,6 +56,7 @@
     "dart.analysis.tool.window.visible": "false",
     "git-widget-placeholder": "master",
     "last_opened_file_path": "D:/Todo-Frontend/todo-frontend",
+    "list.type.of.created.stylesheet": "CSS",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -49,6 +68,11 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Todo-Frontend\todo-frontend\src\Styles" />
+    </key>
+  </component>
   <component name="RunManager" selected="npm.start">
     <configuration name="debug reactjs" type="JavascriptDebugType" uri="http://localhost:8000">
       <method v="2" />
@@ -82,7 +106,9 @@
       <updated>1740146834317</updated>
       <workItem from="1740146835383" duration="8145000" />
       <workItem from="1740198516451" duration="6977000" />
-      <workItem from="1740213465701" duration="323000" />
+      <workItem from="1740213465701" duration="1260000" />
+      <workItem from="1740226892769" duration="1762000" />
+      <workItem from="1740319627342" duration="1948000" />
     </task>
     <task id="LOCAL-00001" summary="create app">
       <option name="closed" value="true" />
@@ -92,7 +118,15 @@
       <option name="project" value="LOCAL" />
       <updated>1740157038379</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="update api">
+      <option name="closed" value="true" />
+      <created>1740214250181</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1740214250181</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -100,6 +134,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="create app" />
-    <option name="LAST_COMMIT_MESSAGE" value="create app" />
+    <MESSAGE value="update api" />
+    <option name="LAST_COMMIT_MESSAGE" value="update api" />
   </component>
 </project>
