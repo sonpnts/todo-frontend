@@ -138,39 +138,41 @@ const ListTask = () => {
     return (
         <div className="app-container">
             <div className="background-image">
-                <div className="menu d-flex justify-content-between align-items-center p-3 shadow-sm bg-white rounded">
-                    <h4 className="mb-0 text-primary">Quản lý Công việc</h4>
+                <div className="menu d-flex justify-content-between align-items-center p-2 shadow-sm bg-white rounded">
+                    <h4 className="mb-0 text-primary title-web">Quản lý Công việc</h4>
                     <div className="search-form">
-                        <input
-                            type="text"
-                            placeholder="Nhập từ khóa..."
-                            onChange={handleTextChange}
-                            value={q}
-                            className="search-input"
-                            onKeyDown={(e) => {
-                                if (e.key === "Enter") {
-                                    e.preventDefault();
-                                    handleSearch(q);
-                                }
-                            }}
-                        />
-                        <button onClick={() => handleSearch(q)} className="search-button">
-                            <i className="bi bi-search"></i> Tìm kiếm
-                        </button>
-                        <button onClick={()=> setShowConfirmModal(true)} className="add-data-button">
+                        <div className="d-flex group-search">
+                            <input
+                                type="text"
+                                placeholder="Nhập từ khóa..."
+                                onChange={handleTextChange}
+                                value={q}
+                                className="search-input"
+                                onKeyDown={(e) => {
+                                    if (e.key === "Enter") {
+                                        e.preventDefault();
+                                        handleSearch(q);
+                                    }
+                                }}
+                            />
+                            <button onClick={() => handleSearch(q)} className="search-button">
+                                <i className="bi bi-search"></i> Tìm kiếm
+                            </button>
+                        </div>
+
+                        <button onClick={() => setShowConfirmModal(true)} className="add-data-button">
                             <i className="bi bi-plus-circle"></i> Thêm dữ liệu
                         </button>
                     </div>
                 </div>
-
                 <Container
                     onScroll={loadMore}
                     ref={scrollContainerRef}
                     className="content-container"
-                    style={{ height: "80vh", overflowY:"auto" }}
+                    style={{height: "80vh", overflowY: "auto"}}
                 >
                     {tasks.length > 0 ? (
-                        <Table bordered hover responsive className="table-striped table-sm shadow-sm rounded mt-4">
+                        <Table bordered hover responsive className="table-striped table-sm shadow-sm rounded">
                             <thead className="thead-light">
                             <tr >
                                 {Object.entries(tasks[0]).map(([key], index) => (

@@ -12,9 +12,13 @@
     width: 100%;
     max-width: 1200px;
     background: white;
-    border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     overflow: hidden;
+}
+.group-search{
+    align-items: center;
+    gap: 10px;
+    width: 100%;
 }
 
 .background-overlay {
@@ -32,7 +36,6 @@
     z-index: 2;
     padding: 20px;
     background: white;
-    border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -130,63 +133,6 @@ thead tr {
         border: 0;
     }
 
-    .menu-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 100%;
-        padding: 15px;
-    }
-
-    .title {
-        font-size: 18px;
-        font-weight: bold;
-        color: #007bff;
-        text-align: center;
-        margin-bottom: 10px;
-    }
-
-    .search-form {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-        width: 100%;
-    }
-
-    .search-input {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 6px;
-        font-size: 14px;
-    }
-
-    .search-button {
-        width: 100%;
-        padding: 10px;
-        background: #007bff;
-        color: white;
-        border: none;
-        border-radius: 6px;
-        font-size: 14px;
-        cursor: pointer;
-    }
-
-    .search-button:hover {
-        background: #0056b3;
-    }
-
-    .add-data-button {
-        width: 100%;
-        padding: 10px;
-        background: #28a745;
-        color: white;
-        border: none;
-        border-radius: 6px;
-        font-size: 14px;
-        margin-top: 10px;
-        cursor: pointer;
-    }
 
     .add-data-button:hover {
         background: #218838;
@@ -204,6 +150,35 @@ thead tr {
     .background-image{
         border-radius: 0px ;
     }
+
+    .menu {
+        margin-top: 20px;
+        flex-direction: column;
+    }
+    .title-web {
+        padding: 10px;
+    }
+
+    .search-form {
+        display: flex;
+        gap: 10px;
+        width: 100%;
+    }
+
+    .search-input {
+
+        min-width: 0;
+    }
+    .search-button{
+        width: 30%;
+    }
+    .search-button, .add-data-button{
+        padding: 5px 20px;
+        display: block !important;
+        white-space: nowrap;
+    }
+
+
 }
 
 
