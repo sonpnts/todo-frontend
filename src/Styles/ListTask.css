@@ -131,6 +131,7 @@ thead tr {
     .content-container {
         padding: 10px;
         border: 0;
+        -webkit-overflow-scrolling: touch;
     }
 
 
@@ -177,6 +178,15 @@ thead tr {
         display: block !important;
         white-space: nowrap;
     }
+    .table th{
+        word-break: break-word;
+
+    }
+    .table th:nth-child(4),
+    .table td:nth-child(4) {
+        min-width: 61px;
+    }
+
 
 
 }
