@@ -1,6 +1,3 @@
-/* ListTask.css - Giao diện đẹp mắt và responsive */
-
-/* Cấu trúc chung */
 .app-container {
     display: flex;
     justify-content: center;
@@ -39,40 +36,67 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Thanh tìm kiếm */
 .search-form {
     display: flex;
-    justify-content: space-between;
+    gap: 10px;
     align-items: center;
     margin-bottom: 15px;
 }
 
 .search-input {
     flex-grow: 1;
-    padding: 8px;
+    padding: 10px;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 8px;
+    font-size: 16px;
+    outline: none;
+    transition: border 0.3s ease-in-out;
+}
+
+.search-input:focus {
+    border-color: #007bff;
+}
+
+.search-button, .add-data-button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: background 0.3s ease-in-out;
 }
 
 .search-button {
     background: #007bff;
     color: white;
-    padding: 8px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-left: 10px;
 }
 
 .search-button:hover {
     background: #0056b3;
 }
 
-/* Bảng dữ liệu */
+.add-data-button {
+    background: #28a745;
+    color: white;
+}
+
+.add-data-button:hover {
+    background: #218838;
+}
+
+
 .table {
     background: white;
-    border-radius: 8px;
     overflow: hidden;
+}
+thead tr {
+    position: sticky;
+    top: 0;
+    background-color: white;
+    z-index: 1020;
 }
 
 .thead-light th {
@@ -84,14 +108,102 @@
 @media (max-width: 768px) {
     .search-form {
         flex-direction: column;
+        gap: 5px;
     }
 
     .search-input {
         width: 100%;
+    }
+
+    .search-button, .add-data-button {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .background-image {
+        max-width: 100%;
+    }
+
+    .content-container {
+        padding: 10px;
+        border: 0;
+    }
+
+    .menu-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        padding: 15px;
+    }
+
+    .title {
+        font-size: 18px;
+        font-weight: bold;
+        color: #007bff;
+        text-align: center;
         margin-bottom: 10px;
+    }
+
+    .search-form {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        width: 100%;
+    }
+
+    .search-input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 14px;
     }
 
     .search-button {
         width: 100%;
+        padding: 10px;
+        background: #007bff;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 14px;
+        cursor: pointer;
+    }
+
+    .search-button:hover {
+        background: #0056b3;
+    }
+
+    .add-data-button {
+        width: 100%;
+        padding: 10px;
+        background: #28a745;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 14px;
+        margin-top: 10px;
+        cursor: pointer;
+    }
+
+    .add-data-button:hover {
+        background: #218838;
+    }
+
+    .content-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .app-container{
+        padding: 0px;
+    }
+    .background-image{
+        border-radius: 0px ;
     }
 }
+
+

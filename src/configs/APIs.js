@@ -1,6 +1,6 @@
 import axios from "axios";
 
-// export const BASE_URL = 'http://192.168.1.2:8080/';
+export const BASE_URL = 'http://192.168.1.8:8080/';
 
 export const formatNS= (dateString) => {
     const [year, month, day] = dateString.split('-');
@@ -8,7 +8,7 @@ export const formatNS= (dateString) => {
 };
 
 
-export const BASE_URL = 'https://todo-09z1.onrender.com'
+// export const BASE_URL = 'https://todo-09z1.onrender.com'
 
 export const endpoints = {
     'tasks': '/tasks/',

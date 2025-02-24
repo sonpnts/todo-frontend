@@ -5,6 +5,7 @@ import { Container, Form, Button, Spinner, Table, Modal } from 'react-bootstrap'
 import debounce from 'lodash.debounce';
 import { isCloseToBottom } from "../../Utils/Tobottom";
 import TaskItem from "./Task";
+import '../../Styles/ListTask.css'
 
 const ListTask = () => {
     const [q, setQ] = useState('');
@@ -13,9 +14,14 @@ const ListTask = () => {
     const [loading, setLoading] = useState(false);
     const scrollContainerRef = useRef(null);
     const [showModal, setShowModal] = useState(false);
+    const [showConfirmModal, setShowConfirmModal] = useState(false);
+    const [isSearching, setIsSearching] = useState(false);
+
+
 
     const loadTasks = useCallback(async () => {
         console.log("Page", page);
+        if (isSearching) return;
         try {
             setLoading(true);
             let res = await APIs.get(`tasks?page=${page}`);
@@ -39,13 +45,20 @@ const ListTask = () => {
     const handleSearch = useCallback(
         debounce(async (query) => {
             setPage(1);
+            setIsSearching(true);
             try {
-                setLoading(true);
-                let res = await APIs.get(`tasks?q=${query}`);
-                if (res.data.tasks.length === 0) {
-                    setTasks([]);
-                } else {
-                    setTasks(res.data.tasks);
+                if(query!==""){
+                    setLoading(true);
+                    let res = await APIs.get(`tasks?q=${query}`);
+                    if (res.data.tasks.length === 0) {
+                        setTasks([]);
+                    } else {
+                        setTasks(res.data.tasks);
+                    }
+                }
+                else{
+                    loadTasks();
+                    setIsSearching(false)
                 }
             } catch (ex) {
                 console.log("Lỗi", ex);
@@ -61,13 +74,13 @@ const ListTask = () => {
     }, [loadTasks,page]);
 
     const loadMore = () => {
-        if (!loading && page > 0 && scrollContainerRef.current) {
-            if (isCloseToBottom(scrollContainerRef.current)) {
-                setLoading(true);
-                setTimeout(() => {
-                    setPage(page +1);
-                }, 500);
-            }
+        if (isSearching || loading || page === 0 || !scrollContainerRef.current) return;
+
+        if (isCloseToBottom(scrollContainerRef.current)) {
+            setLoading(true);
+            setTimeout(() => {
+                setPage(page + 1);
+            }, 500);
         }
     };
 
@@ -101,7 +114,9 @@ const ListTask = () => {
         try {
             const promises = sampleTasks.map(task => APIs.post(`tasks`, task));
             await Promise.all(promises);
+            setShowConfirmModal(false);
             setPage(1);
+            scrollContainerRef.current.scrollTo(0, 0);
             loadTasks();
         } catch (error) {
             console.error("Lỗi khi thêm dữ liệu mẫu:", error);
@@ -111,77 +126,96 @@ const ListTask = () => {
     return (
         <div className="app-container">
             <div className="background-image">
-                <div className="background-overlay"></div>
-                <header
-                    className="menu d-flex justify-content-between align-items-center p-3 shadow-sm bg-white rounded">
+                <div className="menu d-flex justify-content-between align-items-center p-3 shadow-sm bg-white rounded">
                     <h4 className="mb-0 text-primary">Quản lý Công việc</h4>
-                    <Form className="search-form d-flex gap-2">
-                        <Form.Control
+                    <div className="search-form">
+                        <input
                             type="text"
                             placeholder="Nhập từ khóa..."
                             onChange={handleTextChange}
                             value={q}
-                            className="search-input form-control w-100"
+                            className="search-input"
+                            onKeyDown={(e) => {
+                                if (e.key === "Enter") {
+                                    e.preventDefault();
+                                    handleSearch(q);
+                                }
+                            }}
                         />
-                        <Button onClick={() => handleSearch(q)} className="search-button btn btn-primary">
+                        <button onClick={() => handleSearch(q)} className="search-button">
                             <i className="bi bi-search"></i> Tìm kiếm
-                        </Button>
-                        <Button onClick={handleInsertSampleData} className="btn btn-success">
+                        </button>
+                        <button onClick={()=> setShowConfirmModal(true)} className="add-data-button">
                             <i className="bi bi-plus-circle"></i> Thêm dữ liệu
-                        </Button>
-                    </Form>
-                </header>
+                        </button>
+                    </div>
+                </div>
+
                 <Container
                     onScroll={loadMore}
                     ref={scrollContainerRef}
                     className="content-container"
-                    style={{height: "80vh", overflowY: "auto"}}
+                    style={{ height: "80vh", overflowY:"auto" }}
                 >
-
-                    <Table bordered hover responsive className="table-striped table-sm shadow-sm rounded mt-4">
-                        <thead className="thead-light">
-                        <tr>
-                            {tasks.length > 0 &&
-                                Object.keys(tasks[0]).map((key, index) => (
+                    {tasks.length > 0 ? (
+                        <Table bordered hover responsive className="table-striped table-sm shadow-sm rounded mt-4">
+                            <thead className="thead-light">
+                            <tr >
+                                {Object.entries(tasks[0]).map(([key], index) => (
                                     <th key={index} className="text-center">
                                         {key.charAt(0).toUpperCase() + key.slice(1)}
                                     </th>
-                                ))
-                            }
-                            {tasks.length > 0 &&
+                                ))}
                                 <th className="text-center">Thao tác</th>
-                            }
-                        </tr>
-                        </thead>
-                        <tbody className="text-center">
-                        {tasks.map((task) => (
-                            <TaskItem key={task.id} task={task} onDelete={handleDeleteTask}/>
-                        ))}
-                        </tbody>
-                    </Table>
+                            </tr>
+                            </thead>
+                            <tbody className="text-center">
+                            {tasks.map((task) => (
+                                <TaskItem key={task.id} task={task} onDelete={handleDeleteTask} />
+                            ))}
+                            </tbody>
+                        </Table>
+                    ) : (
+                        <p className="text-center mt-3 text-muted">Không có dữ liệu công việc.</p>
+                    )}
 
                     {loading && (
-                        <div className="loading-spinner text-center z-100">
-                            <Spinner animation="border" variant="primary"/>
+                        <div className="loading-spinner text-center">
+                            <Spinner animation="border" variant="primary" />
                         </div>
                     )}
                 </Container>
-
-                <Modal show={showModal} onHide={() => setShowModal(false)} centered>
-                    <Modal.Header closeButton>
-                        <Modal.Title>Không có dữ liệu</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        Hệ thống không tìm thấy dữ liệu. Bạn có muốn nhập dữ liệu mẫu không?
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={() => setShowModal(false)}>Hủy</Button>
-                        <Button variant="primary" onClick={handleInsertSampleData}>Thêm dữ liệu mẫu</Button>
-                    </Modal.Footer>
-                </Modal>
             </div>
+
+            <Modal show={showModal} onHide={() => setShowModal(false)} centered>
+                <Modal.Header closeButton>
+                    <Modal.Title>Nhập dữ liệu mẫu</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    Hệ thống không tìm thấy dữ liệu. Bạn có muốn nhập dữ liệu mẫu không?
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShowModal(false)}>Hủy</Button>
+                    <Button variant="primary" onClick={handleInsertSampleData}>Thêm dữ liệu mẫu</Button>
+                </Modal.Footer>
+            </Modal>
+
+            <Modal show={showConfirmModal} onHide={() => setShowConfirmModal(false)} centered>
+                <Modal.Header closeButton>
+                    <Modal.Title>Xác nhận</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    Bạn có muốn nhập dữ liệu mẫu không?
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShowConfirmModal(false)}>Hủy</Button>
+                    <Button variant="primary" onClick={handleInsertSampleData}>Thêm dữ liệu mẫu</Button>
+                </Modal.Footer>
+            </Modal>
+
         </div>
     );
+
 };
 
 export default ListTask;
