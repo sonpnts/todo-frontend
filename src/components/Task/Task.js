@@ -4,7 +4,7 @@ import APIs from "../../configs/APIs";
 
 const TaskItem = ({ task, onDelete }) => {
     const [completed, setCompleted] = useState(task.completed);
-    const [showConfirm, setShowConfirm] = useState(false); // Trạng thái hiển thị modal xác nhận
+    const [showConfirm, setShowConfirm] = useState(false);
 
     const handleCheck = async () => {
         if (completed) return;

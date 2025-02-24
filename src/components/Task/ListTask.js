@@ -94,6 +94,7 @@ const ListTask = () => {
     };
 
     const handleInsertSampleData = async () => {
+        setLoading(true)
         setShowModal(false);
         const sampleTasks = [
             { "title": "Learn Go", "description": "Study Golang basics" },
@@ -112,14 +113,25 @@ const ListTask = () => {
         ];
 
         try {
-            const promises = sampleTasks.map(task => APIs.post(`tasks`, task));
-            await Promise.all(promises);
-            setShowConfirmModal(false);
-            setPage(1);
-            scrollContainerRef.current.scrollTo(0, 0);
-            loadTasks();
+
+            const responses = await Promise.all(sampleTasks.map(task => APIs.post(`tasks`, task)));
+
+            const allSuccessful = responses.every(response => response.status === 200);
+
+            if (allSuccessful) {
+                setShowConfirmModal(false);
+                setPage(1);
+                scrollContainerRef.current.scrollTo(0, 0);
+                loadTasks();
+                setLoading(false);
+            }
+
         } catch (error) {
             console.error("Lỗi khi thêm dữ liệu mẫu:", error);
+
+        }
+        finally {
+            setLoading(false);
         }
     };
 
@@ -166,7 +178,7 @@ const ListTask = () => {
                                         {key.charAt(0).toUpperCase() + key.slice(1)}
                                     </th>
                                 ))}
-                                <th className="text-center">Thao tác</th>
+                                <th className="text-center">Action</th>
                             </tr>
                             </thead>
                             <tbody className="text-center">
