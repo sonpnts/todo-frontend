@@ -68,12 +68,6 @@ Output sẽ nằm trong thư mục `build/`.
 
 Sau khi deploy thành công, Vercel sẽ cung cấp link để truy cập ứng dụng.
 
----
-
-Nếu bạn cần hỗ trợ hoặc gặp lỗi, hãy kiểm tra logs bằng lệnh:
-
-```sh
-vercel logs <project-name>
-```
+--
 
 ****
