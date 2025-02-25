@@ -14,8 +14,8 @@ Project này là một ứng dụng web được phát triển bằng ReactJS. D
 Clone repo về local:
 
 ```sh
-git clone <repository-url>
-cd <project-folder>
+git clone <[todo-frontend](https://github.com/sonpnts/todo-frontend/)>
+cd <todo-frontend>
 ```
 
 Cài đặt package:
