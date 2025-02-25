@@ -1,49 +1,61 @@
 .app-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    min-width: 100%;
     height: 100vh;
-    background: linear-gradient(135deg, #667eea, #764ba2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     padding: 20px;
+    background: #fff;
 }
 
-.background-image {
-    position: relative;
+.menu {
+    display: flex;
+    justify-content: space-between;
     width: 100%;
-    max-width: 1200px;
-    background: white;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
+    padding: 10px 0;
 }
+
+.content-container {
+    min-width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.table-content {
+    max-height: 80vh;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.table {
+    width: 100%;
+    background: white;
+}
+
+.thead-light th {
+    position: sticky;
+    top: 0;
+    background: #f8f9fa;
+    z-index: 1020;
+    text-align: center;
+}
+
+
+
 .group-search{
     align-items: center;
     gap: 10px;
     width: 100%;
 }
 
-.background-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.05);
-    z-index: 1;
-}
-
-.content-container {
-    position: relative;
-    z-index: 2;
-    padding: 20px;
-    background: white;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
 
 .search-form {
     display: flex;
     gap: 10px;
     align-items: center;
     margin-bottom: 15px;
+    width: 100%;
 }
 
 .search-input {
@@ -84,6 +96,10 @@
 .add-data-button {
     background: #28a745;
     color: white;
+    width: 15%;
+    height: 75%;
+    margin-left: 4px;
+    /*margin-top: 9px;*/
 }
 
 .add-data-button:hover {
@@ -93,7 +109,6 @@
 
 .table {
     background: white;
-    overflow: hidden;
 }
 thead tr {
     position: sticky;
@@ -107,23 +122,38 @@ thead tr {
     text-align: center;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-    .search-form {
-        flex-direction: column;
-        gap: 5px;
-    }
+.global-loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 99999;
+}
 
-    .search-input {
-        width: 100%;
-    }
+.spinner-container {
+    text-align: center;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
 
-    .search-button, .add-data-button {
-        width: 100%;
-    }
+.loading-text {
+    margin-top: 10px;
+    font-size: 16px;
+    color: #333;
 }
 
 @media (max-width: 480px) {
+
+    .add-data-button{
+        width: 50%;
+    }
     .background-image {
         max-width: 100%;
     }
@@ -153,7 +183,7 @@ thead tr {
     }
 
     .menu {
-        margin-top: 20px;
+        padding: 10px;
         flex-direction: column;
     }
     .title-web {
@@ -174,8 +204,6 @@ thead tr {
         width: 30%;
     }
     .search-button, .add-data-button{
-        padding: 5px 20px;
-        display: block !important;
         white-space: nowrap;
     }
     .table th{

@@ -16,7 +16,9 @@ const ListTask = () => {
     const [showModal, setShowModal] = useState(false);
     const [showConfirmModal, setShowConfirmModal] = useState(false);
     const [isSearching, setIsSearching] = useState(false);
-
+    const [isGlobalLoading, setIsGlobalLoading] = useState(false);
+    const [showAddModal, setShowAddModal] = useState(false);
+    const [newTask, setNewTask] = useState({ title: '', description: '' });
 
 
     const loadTasks = useCallback(async () => {
@@ -94,7 +96,7 @@ const ListTask = () => {
     };
 
     const handleInsertSampleData = async () => {
-        setLoading(true)
+        setIsGlobalLoading(true);
         setShowModal(false);
         const sampleTasks = [
             { "title": "Learn Go", "description": "Study Golang basics" },
@@ -119,11 +121,9 @@ const ListTask = () => {
             const allSuccessful = responses.every(response => response.status === 200);
 
             if (allSuccessful) {
-                setShowConfirmModal(false);
                 setPage(1);
                 scrollContainerRef.current.scrollTo(0, 0);
                 loadTasks();
-                setLoading(false);
             }
 
         } catch (error) {
@@ -131,50 +131,68 @@ const ListTask = () => {
 
         }
         finally {
-            setLoading(false);
+            setShowConfirmModal(false);
+            setIsGlobalLoading(false);
+            setShowAddModal(false);
+        }
+    };
+    const handleAddTask = async () => {
+        try {
+            setIsGlobalLoading(true);
+            let res = await APIs.post('tasks', newTask);
+            if (res.status === 200) {
+                setNewTask('');
+                setShowAddModal(false);
+                setPage(1);
+                loadTasks();
+            }
+        } catch (ex) {
+            console.log("Lỗi", ex);
+        } finally {
+            setIsGlobalLoading(false);
         }
     };
 
     return (
         <div className="app-container">
-            <div className="background-image">
-                <div className="menu d-flex justify-content-between align-items-center p-2 shadow-sm bg-white rounded">
-                    <h4 className="mb-0 text-primary title-web">Quản lý Công việc</h4>
-                    <div className="search-form">
-                        <div className="d-flex group-search">
-                            <input
-                                type="text"
-                                placeholder="Nhập từ khóa..."
-                                onChange={handleTextChange}
-                                value={q}
-                                className="search-input"
-                                onKeyDown={(e) => {
-                                    if (e.key === "Enter") {
-                                        e.preventDefault();
-                                        handleSearch(q);
-                                    }
-                                }}
-                            />
-                            <button onClick={() => handleSearch(q)} className="search-button">
-                                <i className="bi bi-search"></i> Tìm kiếm
-                            </button>
-                        </div>
-
-                        <button onClick={() => setShowConfirmModal(true)} className="add-data-button">
-                            <i className="bi bi-plus-circle"></i> Thêm dữ liệu
+            <div className="menu">
+                <div><h4 className="mb-0 text-primary title-web">Quản lý Công việc</h4></div>
+                <div className="search-form">
+                    <div className="d-flex group-search">
+                        <input
+                            type="text"
+                            placeholder="Nhập từ khóa..."
+                            onChange={handleTextChange}
+                            value={q}
+                            className="search-input"
+                            onKeyDown={(e) => {
+                                if (e.key === "Enter") {
+                                    e.preventDefault();
+                                    handleSearch(q);
+                                }
+                            }}
+                        />
+                        <button onClick={() => handleSearch(q)} className="search-button">
+                            <i className="bi bi-search"></i> Tìm kiếm
                         </button>
                     </div>
+
+
                 </div>
-                <Container
-                    onScroll={loadMore}
-                    ref={scrollContainerRef}
-                    className="content-container"
-                    style={{height: "80vh", overflowY: "auto"}}
-                >
+                <button onClick={() => setShowAddModal(true)} className="add-data-button">
+                    <i className="bi bi-plus-circle"></i> Thêm nhiệm vụ
+                </button>
+            </div>
+
+            <Container
+                className="content-container"
+            >
+                <div className="table-content" ref={scrollContainerRef}
+                     onScroll={loadMore}>
                     {tasks.length > 0 ? (
                         <Table bordered hover responsive className="table-striped table-sm shadow-sm rounded">
                             <thead className="thead-light">
-                            <tr >
+                            <tr>
                                 {Object.entries(tasks[0]).map(([key], index) => (
                                     <th key={index} className="text-center">
                                         {key.charAt(0).toUpperCase() + key.slice(1)}
@@ -185,21 +203,23 @@ const ListTask = () => {
                             </thead>
                             <tbody className="text-center">
                             {tasks.map((task) => (
-                                <TaskItem key={task.id} task={task} onDelete={handleDeleteTask} />
+                                <TaskItem key={task.id} task={task} onDelete={handleDeleteTask}/>
                             ))}
                             </tbody>
                         </Table>
+
                     ) : (
                         <p className="text-center mt-3 text-muted">Không có dữ liệu công việc.</p>
                     )}
 
                     {loading && (
                         <div className="loading-spinner text-center">
-                            <Spinner animation="border" variant="primary" />
+                            <Spinner animation="border" variant="primary"/>
                         </div>
                     )}
-                </Container>
-            </div>
+                    </div>
+            </Container>
+
 
             <Modal show={showModal} onHide={() => setShowModal(false)} centered>
                 <Modal.Header closeButton>
@@ -226,6 +246,37 @@ const ListTask = () => {
                     <Button variant="primary" onClick={handleInsertSampleData}>Thêm dữ liệu mẫu</Button>
                 </Modal.Footer>
             </Modal>
+
+            <Modal show={showAddModal} onHide={() => setShowAddModal(false)} centered>
+                <Modal.Header closeButton><Modal.Title>Thêm nhiệm vụ</Modal.Title></Modal.Header>
+                <Modal.Body>
+                    <Form>
+                        <Form.Group>
+                            <Form.Label>Tiêu đề</Form.Label>
+                            <Form.Control type="text" value={newTask.title} onChange={(e) => setNewTask({ ...newTask, title: e.target.value })} />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>Mô tả</Form.Label>
+                            <Form.Control as="textarea" value={newTask.description} onChange={(e) => setNewTask({ ...newTask, description: e.target.value })} />
+                        </Form.Group>
+                    </Form>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="info" onClick={()=> setShowConfirmModal(true)}  >Thêm dữ liệu mẫu</Button>
+                    <Button variant="secondary" onClick={() => setShowAddModal(false)}>Hủy</Button>
+                    <Button variant="primary" onClick={handleAddTask}>Thêm</Button>
+                </Modal.Footer>
+            </Modal>
+
+            {isGlobalLoading && (
+                <div className="global-loading-overlay">
+                    <div className="spinner-container">
+                        <Spinner animation="border" variant="light" />
+                        <p className="loading-text">Đang xử lý, vui lòng chờ...</p>
+                    </div>
+                </div>
+            )}
+
 
         </div>
     );
